@@ -16,8 +16,13 @@ class TestPlayer(unittest.TestCase):
                             [self.card4, self.card5, self.card6] ]
 
     def test_reveal_cards(self):
+        self.player.hand[0][0].reveal()
+        self.player.hand[0][1].reveal() 
+        self.player.hand[1][1].reveal() 
+        self.player.hand[1][2].reveal() 
         revealed_cards = self.player.reveal_cards()
-        self.assertEqual(revealed_cards, [[self.card1, self.card2, self.card3], [self.card4, self.card5, self.card6]])
+        
+        self.assertEqual(revealed_cards, [self.card1, self.card2, self.card5, self.card6])
 
     def test_swap_card(self):
         new_card = Card("Clubs", "3")
