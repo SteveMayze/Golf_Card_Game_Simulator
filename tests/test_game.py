@@ -50,6 +50,17 @@ class TestGame(unittest.TestCase):
         self.game.play_turn(self.player1, take_from_deck=True)
         self.assertNotEqual(self.player1.hand, initial_hand)
         self.assertEqual( sum(len(x) for x in self.player1.hand), 6)
+        
+    def test_rank_in_hand(self):
+        self.game.start_game()
+        card = self.player1.hand[0][0]
+        card.is_revealed = True
+        available_card = self.player1.rank_in_hand(card)
+        self.assertIsInstance(available_card, tuple)
+        self.assertEqual(len(available_card), 3)
+        self.assertIsInstance(available_card[0], Card)
+        self.assertEqual(available_card[1], 1)
+        self.assertEqual(available_card[2], 0)
 
 if __name__ == '__main__':
     unittest.main()

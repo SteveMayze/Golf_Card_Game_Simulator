@@ -16,6 +16,7 @@ class Game:
     def start_game(self):
         self.deck = Deck()
         self.deck.shuffle()
+        
         for deal_count in range(6): ## 6 cards per player
             for player in self.players:
                 player.receive_one_card(self.deck, deal_count)
@@ -35,7 +36,7 @@ class Game:
 
     def next_turn(self):
         self.current_turn = (self.current_turn + 1) % len(self.players)
-
+        
     def is_game_over(self):
         # The game ends when all players have had one turn after the first player finishes
         if self.first_player_done is not None:
@@ -99,24 +100,7 @@ class Game:
         self.next_turn()
 
 
-    def rank_in_hand(self, player, card):
-        for col in range(3):  # Iterate over columns
-            card1 = player.hand[0][col]  # Card in the first row of the column
-            card2 = player.hand[1][col]  # Card in the second row of the column
 
-            if card1.is_revealed and card1.is_revealed and card1.rank != card2.rank:
-                if card1.rank == card.rank:  # If the rank matches the given card
-                    return (player.hand[1][col], 1, col)  # Return the coordinates of the other card in the column (second row)
-                elif card2.rank == card.rank:  # If the rank matches the given card
-                    return (player.hand[0][col], 0, col)  # Return the coordinates of the other card in the column (first row)
-            else:
-                if card1.is_revealed and card1.rank == card.rank:  # If the rank matches the given card
-                    return (player.hand[1][col], 1, col)  # Return the coordinates of the other card in the column (second row)
-                elif card2.is_revealed and card2.rank == card.rank:  # If the rank matches the given card
-                    return (player.hand[0][col], 0, col)  # Return the coordinates of the other card in the column (first row)
-
-        return None  # Return None if no matching rank is found
-    
     def would_help_next_player(self, next_player, card):
         """
         Check if the given card would help the next player complete a column of same-ranked cards.

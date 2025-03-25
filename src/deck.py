@@ -35,7 +35,7 @@ class Deck:
         return len(self.cards)
     
     def add_to_discard_pile(self, old_card):
-        self.discard_pile.append(old_card)
+        self.discard_pile.insert(0, old_card)
         
     def draw_from_discard_pile_card(self):
         drawn_card = self.discard_pile[:1]

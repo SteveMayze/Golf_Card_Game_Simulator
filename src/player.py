@@ -103,6 +103,37 @@ class Player:
                         highest_coordinates = (card, row, col)  # Store the coordinates
         return highest_coordinates
 
+    def card_in_column(self, card):
+        for col in range(3):
+            card1 = self.hand[0][col]
+            card2 = self.hand[1][col]
+            if card1.is_revealed and card2.is_revealed and card1.rank == card2.rank:
+                if card1.is_revealed and card1 == card:
+                    return (card2, 0, col)
+                elif card2.is_revealed and card2 == card:
+                    return (card1, 0, col)
+        return None
+    
+    
+    def rank_in_hand(self, card):
+        for col in range(3):  # Iterate over columns
+            card1 = self.hand[0][col]  # Card in the first row of the column
+            card2 = self.hand[1][col]  # Card in the second row of the column
+            # logger.debug(f"{self.name} rank in hand test {card} == {card1} (0, {col}) and {card2} (1, {col})")
+
+            if card1.is_revealed and card1.is_revealed and card1.rank != card2.rank:
+                if card1.rank == card.rank:  # If the rank matches the given card
+                    return (self.hand[1][col], 1, col)  # Return the coordinates of the other card in the column (second row)
+                elif card2.rank == card.rank:  # If the rank matches the given card
+                    return (self.hand[0][col], 0, col)  # Return the coordinates of the other card in the column (first row)
+            else:
+                if card1.is_revealed and card1.rank == card.rank:  # If the rank matches the given card
+                    return (self.hand[1][col], 1, col)  # Return the coordinates of the other card in the column (second row)
+                elif card2.is_revealed and card2.rank == card.rank:  # If the rank matches the given card
+                    return (self.hand[0][col], 0, col)  # Return the coordinates of the other card in the column (first row)
+
+        # logger.debug("No matching rank found")
+        return None  # Return None if no matching rank is found
 
     def __str__(self):
         return self.name
