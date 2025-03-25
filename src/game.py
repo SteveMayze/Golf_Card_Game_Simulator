@@ -42,6 +42,12 @@ class Game:
         if self.first_player_done is not None:
             return self.current_turn == self.first_player_done
         return False
+    
+    def last_play(self):
+        all_done = False
+        for player in self.players:
+            all_done &=  player.is_finished
+        return all_done
 
     def get_turned_down_cards(self, player):
         turned_down_cards =  []
@@ -87,16 +93,19 @@ class Game:
 
         turned_down_cards = self.get_turned_down_cards(player)
         if len(turned_down_cards) == 0:
-            logger.debug(f"{player.name} has finished")
+            player.is_finished = True
             if self.first_player_done is None:
+                logger.info(f"{player.name} has closed out the game!")
                 self.first_player_done = self.current_turn
-                return
 
         if self.is_game_over():
-            logger.debug("Game over!")
             for row, col in turned_down_cards:
                 player.hand[row][col].card.reveal()
-            return
+            player.is_finished =True
+            if self.last_play():
+                logger.debug("Game over!")
+                return
+
         self.next_turn()
 
 
